@@ -21,7 +21,7 @@ export default AnotherPage;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   console.log("inside ssr");
-  await sleep(1500);
+  await sleep(11000);
 
   console.log("returning ssr");
   return {
