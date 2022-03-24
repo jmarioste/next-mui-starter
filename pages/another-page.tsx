@@ -1,30 +1,84 @@
-import { Box } from "@mui/material";
-import { MuiLink } from "components/common/Alias";
+import { Container, Stack, ListItem, Divider } from "@mui/material";
+import { Box } from "@mui/system";
+import axios from "axios";
+import { MuiLink, Text } from "components/common/Alias";
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
-import { sleep } from "utils/sleep";
+import { useRouter } from "next/router";
+import { ParsedUrlQuery } from "querystring";
 
-const AnotherPage: NextPage = () => {
+type Props = {
+  posts: {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
+  }[];
+};
+const AnotherPage: NextPage<Props> = (props) => {
+  const router = useRouter();
+  const page = router.query.page ? parseInt(router.query.page as string) : 1;
+  const nextPage = page + 1;
+  const prevPage = Math.max(1, page - 1);
   return (
-    <div>
-      Another Page
-      <Box>
-        <Link href={"/ssr"} passHref>
-          <MuiLink>Back</MuiLink>
-        </Link>
+    <Container maxWidth="sm">
+      <Box my={2}>
+        <Text variant="h3"> Items</Text>
+        <Divider sx={{ my: 2 }} />
+        <Stack direction="row" justifyContent="space-between">
+          <Link href={`/another-page?page=${prevPage}`} passHref>
+            <MuiLink>Back</MuiLink>
+          </Link>
+          <Link href={`/another-page?page=${nextPage}`} passHref>
+            <MuiLink>Next</MuiLink>
+          </Link>
+        </Stack>
+        <Stack spacing={2}>
+          {props.posts.map((p) => {
+            return (
+              <Stack key={p.id}>
+                <Text variant="h5" fontWeight={700} textTransform="capitalize">
+                  {p.title}
+                </Text>
+                <Text mt={1} color="GrayText">
+                  {p.body}
+                </Text>
+              </Stack>
+            );
+          })}
+        </Stack>
+        <Stack direction="row" justifyContent="space-between">
+          <Link href={`/another-page?page=${prevPage}`} passHref>
+            <MuiLink>Back</MuiLink>
+          </Link>
+          <Link href={`/another-page?page=${nextPage}`} passHref>
+            <MuiLink>Next</MuiLink>
+          </Link>
+        </Stack>
       </Box>
-    </div>
+    </Container>
   );
 };
 
 export default AnotherPage;
+// interface IQuery extends ParsedUrlQuery {
+//   page: string;
+// }
+type ServerProps = GetServerSideProps<Props>;
+export const getServerSideProps: ServerProps = async (ctx) => {
+  let page = 1;
+  if (typeof ctx.query.page === "string") {
+    page = parseInt(ctx.query.page);
+  }
+  console.log("inside ssr", page);
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  console.log("inside ssr");
-  await sleep(11000);
+  const response = await axios.get<Props["posts"]>(
+    "https://jsonplaceholder.typicode.com/posts"
+  );
 
-  console.log("returning ssr");
   return {
-    props: {},
+    props: {
+      posts: response.data.slice((page - 1) * 10, page * 10),
+    },
   };
 };
