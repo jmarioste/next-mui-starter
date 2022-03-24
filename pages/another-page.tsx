@@ -1,11 +1,10 @@
-import { Container, Stack, ListItem, Divider } from "@mui/material";
+import { Container, Stack, Divider } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { MuiLink, Text } from "components/common/Alias";
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ParsedUrlQuery } from "querystring";
 
 type Props = {
   posts: {
