@@ -1,0 +1,17 @@
+mutation Login($input: LoginInput!) {
+  signin(input: $input) {
+    _id
+    email
+    name
+    display_name
+  }
+}
+
+mutation Signup($input: SignupInput!) {
+  signup(input: $input) {
+    _id
+    email
+    name
+    display_name
+  }
+}
