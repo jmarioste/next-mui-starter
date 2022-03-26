@@ -7,8 +7,8 @@ import MyApolloProvider from "lib/apollo/ApolloProvider";
 import { useServiceWorker } from "components/hooks/useServiceWorker";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const service = useServiceWorker();
-  console.log(service);
+  useServiceWorker();
+
   return (
     <ThemeProvider theme={theme}>
       <SessionProvider>
