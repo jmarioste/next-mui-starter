@@ -1,14 +1,15 @@
 import {
   AppBar,
-  Box,
   Button,
   Container,
   Toolbar,
   Typography,
+  Link as MuiLink,
 } from "@mui/material";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
+import PageTransition from "./PageTransition";
 
 const Layout: React.FC = ({ children }) => {
   const { data: session } = useSession();
@@ -23,11 +24,16 @@ const Layout: React.FC = ({ children }) => {
     }
   };
   return (
-    <Container maxWidth="lg">
-      <AppBar>
+    <>
+      <PageTransition />
+      <AppBar position="static">
         <Toolbar>
           <Link href="/" passHref>
-            <Typography flex={1} component="a">{`ExpenseBook`}</Typography>
+            <MuiLink
+              flex={1}
+              color="#fff"
+              underline="none"
+            >{`ExpenseBook`}</MuiLink>
           </Link>
           <Typography mr={2}>{session?.user?.email}</Typography>
           {
@@ -37,8 +43,8 @@ const Layout: React.FC = ({ children }) => {
           }
         </Toolbar>
       </AppBar>
-      <Box mt={10}>{children}</Box>
-    </Container>
+      <Container maxWidth="md">{children}</Container>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 // import { NextLink } from "components/common/NextLink";
-import { Box } from "@mui/material";
+import { Box, Link as MuiLink } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -37,11 +37,11 @@ const Home: NextPage = () => {
             <p>Learn about Next.js in an interactive course with quizzes!</p>
           </a>
 
-          <Link href="/posts">
-            <a>
+          <Link href="/posts" passHref>
+            <MuiLink>
               <h2>Posts</h2>
               <p>Example of ssr page</p>
-            </a>
+            </MuiLink>
           </Link>
 
           <a

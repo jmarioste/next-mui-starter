@@ -4,7 +4,6 @@ import { theme } from "components/theme";
 import Layout from "components/common/Layout";
 import { SessionProvider } from "next-auth/react";
 import MyApolloProvider from "lib/ApolloProvider";
-import PageTransition from "components/common/PageTransition";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <SessionProvider>
         <MyApolloProvider>
           <CssBaseline />
-          <PageTransition />
+
           <Layout>
             <Component {...pageProps} />
           </Layout>
