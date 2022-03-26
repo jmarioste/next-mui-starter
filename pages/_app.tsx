@@ -4,11 +4,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Box, CssBaseline, LinearProgress, ThemeProvider } from "@mui/material";
 import { theme } from "components/theme";
-import { ApolloProvider } from "@apollo/client";
-import { getApolloClient } from "lib/apollo-client";
+import Layout from "components/common/Layout";
+import { SessionProvider } from "next-auth/react";
+import MyApolloProvider from "lib/ApolloProvider";
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const client = getApolloClient();
+
   const [loading, setLoading] = useState(0);
   useEffect(() => {
     const handleRouteChangeStart = () => setLoading(1);
@@ -31,19 +32,23 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider theme={theme}>
-      <ApolloProvider client={client}>
-        <CssBaseline />
-        {!!loading && (
-          <Box position="fixed" width="100%" top={0}>
-            <LinearProgress
-              color="secondary"
-              variant="determinate"
-              value={loading}
-            />
-          </Box>
-        )}
-        <Component {...pageProps} />
-      </ApolloProvider>
+      <SessionProvider>
+        <MyApolloProvider>
+          <CssBaseline />
+          {!!loading && (
+            <Box position="fixed" width="100%" top={0}>
+              <LinearProgress
+                color="secondary"
+                variant="determinate"
+                value={loading}
+              />
+            </Box>
+          )}
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </MyApolloProvider>
+      </SessionProvider>
     </ThemeProvider>
   );
 }

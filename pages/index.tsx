@@ -37,9 +37,9 @@ const Home: NextPage = () => {
             <p>Learn about Next.js in an interactive course with quizzes!</p>
           </a>
 
-          <Link href="/ssr">
+          <Link href="/posts">
             <a>
-              <h2>SSR</h2>
+              <h2>Posts</h2>
               <p>Example of ssr page</p>
             </a>
           </Link>

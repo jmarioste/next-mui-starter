@@ -5,6 +5,8 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
@@ -24,4 +26,31 @@ export function getApolloClient() {
   });
 
   return apolloClient;
+}
+
+export function useApollo() {
+  const { data: session } = useSession();
+  const token = session?.token ?? "";
+  const store = useMemo(() => {
+    const client = getApolloClient();
+    if (token) {
+      //if there is a session, we set the apollo link to include token
+      const authMiddleware = new ApolloLink((operation, forward) => {
+        // add the authorization to the headers
+        operation.setContext(({ headers = {} }) => ({
+          headers: {
+            ...headers,
+            authorization: token ? "Bearer " + token : null,
+          },
+        }));
+
+        return forward(operation);
+      });
+
+      client.setLink(ApolloLink.from([authMiddleware, httpLink]));
+    }
+    return client;
+  }, [token]);
+
+  return store;
 }

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
-// import Cookies from "cookies";
+import jwt from "jsonwebtoken";
 import { getApolloClient } from "lib/apollo-client";
 import {
   LoginDocument,
@@ -9,6 +9,10 @@ import {
   LoginMutationVariables,
 } from "_generated/graphql";
 import { ApolloError } from "@apollo/client";
+
+if (!process.env.SECRET) {
+  throw new Error("please provide process.env.SECRET environment variable");
+}
 
 export default async function hanlder(
   req: NextApiRequest,
@@ -23,18 +27,6 @@ export default async function hanlder(
 
   return await NextAuth(req, res, {
     providers: [
-      // FacebookProvider({
-      //   clientId: process.env.FACEBOOK_CLIENT_ID,
-      //   clientSecret: process.env.FACEBOOK_CLIENT_SECRET
-      // }),
-      // GoogleProvider({
-      //   clientId: process.env.GOOGLE_CLIENT_ID,
-      //   clientSecret: process.env.GOOGLE_CLIENT_SECRET
-      // }),
-      // LinkedInProvider({
-      //   clientId: process.env.LINKEDIN_CLIENT_ID,
-      //   clientSecret: process.env.LINKEDIN_CLIENT_SECRET
-      // }),
       //TODO: Create signIn mutation
       CredentialsProvider({
         name: "Credentials",
@@ -76,5 +68,35 @@ export default async function hanlder(
         },
       }),
     ],
+    secret: process.env.SECRET,
+    session: {
+      strategy: "jwt",
+    },
+
+    jwt: {
+      secret: process.env.SECRET,
+    },
+
+    pages: {
+      signIn: "/signin",
+    },
+    callbacks: {
+      session: async ({ session, token, user }) => {
+        console.log("inside session");
+        if (session.user) {
+          const secret = process.env.SECRET;
+          const access_token = jwt.sign(
+            { email: token.email ?? user.email },
+            secret,
+            {
+              algorithm: "HS256",
+            }
+          );
+          session.token = access_token;
+        }
+
+        return session;
+      },
+    },
   });
 }
