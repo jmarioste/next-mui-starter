@@ -8,7 +8,6 @@ const Posts = () => {
   const { data } = usePostsQuery({
     skip: !session,
   });
-  console.log("inside posts", session, !session);
   return (
     <Stack spacing={2}>
       {data?.posts.map((post) => {
