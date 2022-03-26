@@ -12,6 +12,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type AppState = {
+  __typename?: 'AppState';
+  loggedIn: Scalars['Boolean'];
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -43,6 +48,7 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  app: AppState;
   me?: Maybe<User>;
   posts: Array<Post>;
   secret: User;
