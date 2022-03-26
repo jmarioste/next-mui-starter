@@ -1,126 +1,23 @@
+import * as Types from './types';
+
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
-/** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-};
-
-export type LoginInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  signin: User;
-  signup?: Maybe<User>;
-};
-
-
-export type MutationSigninArgs = {
-  input: LoginInput;
-};
-
-
-export type MutationSignupArgs = {
-  input: SignupInput;
-};
-
-export type Post = {
-  __typename?: 'Post';
-  _id: Scalars['ID'];
-  body: Scalars['String'];
-  title: Scalars['String'];
-  user: User;
-};
-
-export type Query = {
-  __typename?: 'Query';
-  me?: Maybe<User>;
-  posts: Array<Post>;
-  secret: User;
-};
-
-export type SignupInput = {
-  email: Scalars['String'];
-  name: Scalars['String'];
-  password: Scalars['String'];
-};
-
-export type User = {
-  __typename?: 'User';
-  _id: Scalars['String'];
-  display_name: Scalars['String'];
-  email: Scalars['String'];
-  name: Scalars['String'];
-};
-
-export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', _id: string, title: string, body: string }> };
-
-export type LoginMutationVariables = Exact<{
-  input: LoginInput;
+export type LoginMutationVariables = Types.Exact<{
+  input: Types.LoginInput;
 }>;
 
 
 export type LoginMutation = { __typename?: 'Mutation', signin: { __typename?: 'User', _id: string, email: string, name: string, display_name: string } };
 
-export type SignupMutationVariables = Exact<{
-  input: SignupInput;
+export type SignupMutationVariables = Types.Exact<{
+  input: Types.SignupInput;
 }>;
 
 
 export type SignupMutation = { __typename?: 'Mutation', signup?: { __typename?: 'User', _id: string, email: string, name: string, display_name: string } | null };
 
 
-export const PostsDocument = gql`
-    query Posts {
-  posts {
-    _id
-    title
-    body
-  }
-}
-    `;
-
-/**
- * __usePostsQuery__
- *
- * To run a query within a React component, call `usePostsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePostsQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePostsQuery(baseOptions?: Apollo.QueryHookOptions<PostsQuery, PostsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PostsQuery, PostsQueryVariables>(PostsDocument, options);
-      }
-export function usePostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsQuery, PostsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PostsQuery, PostsQueryVariables>(PostsDocument, options);
-        }
-export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
-export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
-export type PostsQueryResult = Apollo.QueryResult<PostsQuery, PostsQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   signin(input: $input) {

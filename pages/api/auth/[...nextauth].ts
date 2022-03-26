@@ -3,12 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import jwt from "jsonwebtoken";
 import { getApolloClient } from "lib/apollo-client";
+import { ApolloError } from "@apollo/client";
 import {
-  LoginDocument,
   LoginMutation,
   LoginMutationVariables,
-} from "_generated/graphql";
-import { ApolloError } from "@apollo/client";
+  LoginDocument,
+} from "graphql/user.generated";
 
 if (!process.env.SECRET) {
   throw new Error("please provide process.env.SECRET environment variable");
@@ -63,7 +63,7 @@ export default async function hanlder(
               throw new Error(e.message);
             }
 
-            throw new Error(`signIn ${e}`);
+            throw new Error(`${e.message}`);
           }
         },
       }),

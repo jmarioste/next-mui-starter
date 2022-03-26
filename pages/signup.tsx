@@ -1,12 +1,12 @@
-import { LoadingButton } from "@mui/lab";
-import { Container, Stack, TextField, Typography } from "@mui/material";
-import FormikTextField from "components/common/FormikTextField";
+import { Container, Stack, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
-import React from "react";
+import { LoadingButton } from "@mui/lab";
 import { object, string, TypeOf } from "yup";
-import { useSignupMutation } from "_generated/graphql";
 import { signIn } from "next-auth/react";
+import { useSignupMutation } from "graphql/user.generated";
+import FormikTextField from "components/common/FormikTextField";
 import Link from "next/link";
+
 const schema = object({
   name: string().required(),
   email: string().email().required(),

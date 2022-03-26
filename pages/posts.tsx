@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { usePostsQuery } from "graphql/posts.generated";
 import { useSession } from "next-auth/react";
 import React from "react";
-import { usePostsQuery } from "_generated/graphql";
 
 const Posts = () => {
   const { data: session } = useSession();
-  const { data, loading } = usePostsQuery({
+  const { data } = usePostsQuery({
     skip: !session,
   });
   console.log("inside posts", session, !session);
