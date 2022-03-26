@@ -1,7 +1,0 @@
-type AppState {
-  loggedIn: Boolean!
-}
-
-extend type Query {
-  app: AppState!
-}

@@ -2,27 +2,26 @@ import {
   ApolloClient,
   ApolloLink,
   HttpLink,
-  InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
+import { apolloCache } from "./cache";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const httpLink = new HttpLink({
-  // Server URL (must be absolute)
   uri: process.env.API_URL,
-  // Additional fetch() options like `credentials` or `headers`
   credentials: "include",
 });
 
+const cache = apolloCache;
 export function getApolloClient() {
   if (apolloClient) return apolloClient;
   apolloClient = new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: ApolloLink.from([httpLink]),
-    cache: new InMemoryCache({}),
+    cache: cache,
   });
 
   return apolloClient;

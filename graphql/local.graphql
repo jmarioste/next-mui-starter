@@ -1,5 +1,0 @@
-query AppState {
-  app @client {
-    loggedIn
-  }
-}
