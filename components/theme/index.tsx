@@ -10,6 +10,10 @@ export const theme = createTheme({
       main: "#2E5289",
       contrastText: "#FFFFFF",
     },
+    neutral: {
+      main: "#FFFFFF",
+      contrastText: "#0070f3",
+    },
   },
   typography: {
     allVariants: {

@@ -16,9 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <MyApolloProvider>
               <CssBaseline />
 
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <Component {...pageProps} />
             </MyApolloProvider>
           </SessionProvider>
         </ThemeProvider>

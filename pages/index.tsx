@@ -1,12 +1,13 @@
 // import { NextLink } from "components/common/NextLink";
 import { Box, Link as MuiLink, Typography } from "@mui/material";
+import Layout from "components/common/Layout";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
-    <Box>
+    <Layout>
       <Head>
         <title>ExpenseBook</title>
         <meta name="description" content="Manage your expenses" />
@@ -20,7 +21,7 @@ const Home: NextPage = () => {
           <MuiLink>Posts</MuiLink>
         </Link>
       </Box>
-    </Box>
+    </Layout>
   );
 };
 
