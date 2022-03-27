@@ -6,23 +6,36 @@
  * @type {ServiceWorkerGlobalScope}
  */
 const sw = self;
-const version = "1.3";
+const version = "1.94";
 
-const staticCacheName = "pages-cache-v1";
+const staticCacheName = `static-cache-${version}`;
+
 sw.addEventListener("install", function (event) {
-  console.log("Hello world from the Service Worker  4🤙");
-  // event.waitUntil(
-  //   caches
-  //     .open(staticCacheName)
-  //     .then((cache) => cache.addAll(precacheResources))
-  // );
-  this.skipWaiting();
+  console.log(`ServiceWorker version ${version} installed`);
+  sw.skipWaiting();
 });
 
 sw.addEventListener("activate", async function (event) {
-  console.log("activated");
-  await this.clients.claim();
-  console.log("service worker has now claimed all the pages");
+  let deleteCache = this.caches.keys().then((keys) => {
+    const deletes = keys
+      .filter((key) => key !== staticCacheName)
+      .map((key) => {
+        console.log("deleting " + key);
+        return this.caches.delete(key);
+      });
+    return Promise.all(deletes);
+  });
+
+  event.waitUntil(
+    Promise.all(deleteCache)
+      .then(() => {
+        console.log("claiming windows");
+        return this.clients.claim();
+      })
+      .then(() => {
+        console.log("activated");
+      })
+  );
 });
 
 sw.addEventListener("message", async function (event) {
@@ -36,24 +49,20 @@ sw.addEventListener("message", async function (event) {
 });
 
 sw.addEventListener("fetch", function (event) {
-  console.log("Fetch intercepted for:", event.request.url);
-  event.respondWith(
-    caches.match(event.request).then(async (cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      const response = await fetch(event.request);
-      if (
-        response.headers.has("content-type") &&
-        response.headers.get("content-type").match(/font/i)
-      ) {
-        const cache = await this.caches.open(staticCacheName);
-        cache.add(event.request.url, response);
-      }
+  const promise = caches.match(event.request).then(async (cachedResponse) => {
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    const response = await fetch(event.request);
+    if (response.url.match(/(_next\/static)|.woff2|.css/i)) {
+      console.log("Caching:", event.request.url);
+      const cache = await this.caches.open(staticCacheName);
+      cache.add(event.request.url, response);
+    }
 
-      return response;
-    })
-  );
+    return response;
+  });
+  event.respondWith(promise);
 });
 
 console.log(self);
