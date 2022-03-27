@@ -6,7 +6,7 @@
  * @type {ServiceWorkerGlobalScope}
  */
 const sw = self;
-const version = "1.95";
+const version = "2";
 
 const staticCacheName = `static-cache-${version}`;
 
@@ -16,18 +16,18 @@ sw.addEventListener("install", function (event) {
 });
 
 sw.addEventListener("activate", async function (event) {
-  let deleteCache = this.caches.keys().then((keys) => {
-    const deletes = keys
-      .filter((key) => key !== staticCacheName)
-      .map((key) => {
-        console.log("deleting " + key);
-        return this.caches.delete(key);
-      });
-    return Promise.all(deletes);
-  });
-
   event.waitUntil(
-    Promise.all(deleteCache)
+    this.caches
+      .keys()
+      .then((keys) => {
+        const deletes = keys
+          .filter((key) => key !== staticCacheName)
+          .map((key) => {
+            console.log("deleting " + key);
+            return this.caches.delete(key);
+          });
+        return Promise.all(deletes);
+      })
       .then(() => {
         console.log("claiming windows");
         return this.clients.claim();
