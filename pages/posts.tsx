@@ -1,4 +1,3 @@
-import { useReactiveVar } from "@apollo/client";
 import {
   Box,
   Button,
@@ -12,7 +11,6 @@ import {
 import { useAppState } from "components/hooks/useAppState";
 import { usePostsQuery } from "graphql/posts.generated";
 import { useSession } from "next-auth/react";
-import React from "react";
 
 const Posts = () => {
   const { data: session } = useSession();

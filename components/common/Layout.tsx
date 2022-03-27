@@ -1,49 +1,34 @@
 import {
   AppBar,
-  Button,
   Container,
   Toolbar,
-  Typography,
   Link as MuiLink,
+  Stack,
+  Box,
 } from "@mui/material";
-import { signIn, signOut, useSession } from "next-auth/react";
+import AccountMenu from "components/header/AccountMenu";
 import Link from "next/link";
 import React from "react";
 import PageTransition from "./PageTransition";
 
 const Layout: React.FC = ({ children }) => {
-  const { data: session } = useSession();
-  const text = session ? "Sign out" : "Sign in";
-  const handleClick = () => {
-    if (session?.token) {
-      signOut({
-        callbackUrl: "/signin",
-      });
-    } else {
-      signIn();
-    }
-  };
   return (
     <>
       <PageTransition />
       <AppBar position="static">
-        <Toolbar>
-          <Link href="/" passHref>
-            <MuiLink
-              flex={1}
-              color="#fff"
-              underline="none"
-            >{`ExpenseBook`}</MuiLink>
-          </Link>
-          <Typography mr={2}>{session?.user?.email}</Typography>
-          {
-            <Button onClick={handleClick} variant="contained" color="secondary">
-              {text}
-            </Button>
-          }
+        <Toolbar disableGutters>
+          <Container maxWidth="lg">
+            <Stack direction="row" alignItems="center">
+              <Link href="/" passHref>
+                <MuiLink color="#fff" underline="none">{`ExpenseBook`}</MuiLink>
+              </Link>
+              <Box flex={1} />
+              <AccountMenu />
+            </Stack>
+          </Container>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="md">{children}</Container>
+      <Container maxWidth="lg">{children}</Container>
     </>
   );
 };
