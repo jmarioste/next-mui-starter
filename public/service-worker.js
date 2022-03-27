@@ -6,7 +6,7 @@
  * @type {ServiceWorkerGlobalScope}
  */
 const sw = self;
-const version = "1.94";
+const version = "1.95";
 
 const staticCacheName = `static-cache-${version}`;
 
@@ -49,20 +49,23 @@ sw.addEventListener("message", async function (event) {
 });
 
 sw.addEventListener("fetch", function (event) {
-  const promise = caches.match(event.request).then(async (cachedResponse) => {
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-    const response = await fetch(event.request);
-    if (response.url.match(/(_next\/static)|.woff2|.css/i)) {
-      console.log("Caching:", event.request.url);
-      const cache = await this.caches.open(staticCacheName);
-      cache.add(event.request.url, response);
-    }
-
-    return response;
-  });
-  event.respondWith(promise);
+  // const promise = caches
+  //   .match(event.request, {
+  //     ignoreSearch: true,
+  //   })
+  //   .then(async (cachedResponse) => {
+  //     if (cachedResponse) {
+  //       return cachedResponse;
+  //     }
+  //     const response = await fetch(event.request);
+  //     if (response.url.match(/(_next\/static)|.woff2|.css/i)) {
+  //       console.log("Caching:", event.request.url);
+  //       const cache = await this.caches.open(staticCacheName);
+  //       cache.add(event.request.url, response.clone());
+  //     }
+  //     return response;
+  //   });
+  // event.respondWith(promise);
 });
 
 console.log(self);

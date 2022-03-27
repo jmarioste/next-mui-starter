@@ -1,5 +1,6 @@
 // import { NextLink } from "components/common/NextLink";
 import { Box, Link as MuiLink, Typography } from "@mui/material";
+import Image from "components/common/Image";
 import Layout from "components/common/Layout";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -20,6 +21,14 @@ const Home: NextPage = () => {
         <Link href={"/posts"} passHref>
           <MuiLink>Posts</MuiLink>
         </Link>
+        <Box position={"relative"} width="100%" height="800px">
+          <Image
+            src={"/non-existent.png"}
+            layout="fill"
+            objectFit="cover"
+            alt="bg"
+          />
+        </Box>
       </Box>
     </Layout>
   );

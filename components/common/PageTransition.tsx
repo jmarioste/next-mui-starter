@@ -28,7 +28,11 @@ const PageTransition = () => {
   return (
     !!loading && (
       <Box position="fixed" width="100%" top={0}>
-        <LinearProgress color="error" variant="determinate" value={loading} />
+        <LinearProgress
+          color="secondary"
+          variant="determinate"
+          value={loading}
+        />
       </Box>
     )
   );
