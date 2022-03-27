@@ -1,4 +1,4 @@
-import { Settings, Logout } from "@mui/icons-material";
+import { Settings, Logout, Dashboard } from "@mui/icons-material";
 import {
   IconButton,
   Avatar,
@@ -88,6 +88,12 @@ const AccountMenu = () => {
           ></ListItemText>
         </ListItem>
         <Divider />
+        <MenuItem>
+          <ListItemIcon>
+            <Dashboard fontSize="small" />
+          </ListItemIcon>
+          Dashboard
+        </MenuItem>
         <MenuItem>
           <ListItemIcon>
             <Settings fontSize="small" />

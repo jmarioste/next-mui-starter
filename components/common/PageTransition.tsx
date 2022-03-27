@@ -18,7 +18,11 @@ const PageTransition = () => {
   useEffect(() => {
     if (loading > 0) {
       const timer = setTimeout(() => {
-        setLoading((prev) => prev + 15);
+        try {
+          setLoading((prev) => prev + 15);
+        } catch (e) {
+          console.log(e.message);
+        }
       }, 50);
 
       return () => clearTimeout(timer);
@@ -28,11 +32,7 @@ const PageTransition = () => {
   return (
     !!loading && (
       <Box position="fixed" width="100%" top={0}>
-        <LinearProgress
-          color="secondary"
-          variant="determinate"
-          value={loading}
-        />
+        <LinearProgress color="primary" variant="determinate" value={loading} />
       </Box>
     )
   );

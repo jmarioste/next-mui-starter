@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   styled,
+  Skeleton,
 } from "@mui/material";
 import { MuiLink } from "components/common/Alias";
 import { signIn, useSession } from "next-auth/react";
@@ -15,7 +16,7 @@ import React from "react";
 import AccountMenu from "./AccountMenu";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const user = session?.user;
   const redirectUrl = encodeURIComponent(router.asPath);
@@ -23,7 +24,7 @@ const Navbar = () => {
     <NavbarBase position="static">
       <Toolbar disableGutters>
         <Container maxWidth="lg">
-          <Stack direction="row" alignItems="center" spacing={2}>
+          <Stack direction="row" alignItems="center" spacing={1}>
             <Link href="/" passHref>
               <MuiLink underline="none">{`ExpenseBook`}</MuiLink>
             </Link>
@@ -40,7 +41,11 @@ const Navbar = () => {
             <Link href="/contact" passHref>
               <Button variant="text">Contact</Button>
             </Link>
-            {user ? (
+            {status === "loading" ? (
+              <>
+                <Skeleton width={32} height={32} variant="circular" />
+              </>
+            ) : user ? (
               <AccountMenu />
             ) : (
               <>

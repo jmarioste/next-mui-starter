@@ -8,6 +8,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import Layout from "components/common/Layout";
 import { useAppState } from "components/hooks/useAppState";
 import { usePostsQuery } from "graphql/posts.generated";
 import { useSession } from "next-auth/react";
@@ -28,26 +29,28 @@ const Posts = () => {
   };
 
   return (
-    <Stack spacing={2}>
-      <Box>
-        <Button onClick={handleClick}>Show Dialog</Button>
-        <Dialog open={state.modalShown}>
-          <DialogTitle>My Dialog</DialogTitle>
-          <DialogContent>My Content</DialogContent>
-          <DialogActions>
-            <Button onClick={handleClick}>Close</Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-      {data?.posts.map((post) => {
-        return (
-          <Box key={post._id}>
-            <Typography variant="h4">{post.title}</Typography>
-            <Typography color="textSecondary">{post.body}</Typography>
-          </Box>
-        );
-      })}
-    </Stack>
+    <Layout>
+      <Stack spacing={2}>
+        <Box>
+          <Button onClick={handleClick}>Show Dialog</Button>
+          <Dialog open={state.modalShown}>
+            <DialogTitle>My Dialog</DialogTitle>
+            <DialogContent>My Content</DialogContent>
+            <DialogActions>
+              <Button onClick={handleClick}>Close</Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+        {data?.posts.map((post) => {
+          return (
+            <Box key={post._id}>
+              <Typography variant="h4">{post.title}</Typography>
+              <Typography color="textSecondary">{post.body}</Typography>
+            </Box>
+          );
+        })}
+      </Stack>
+    </Layout>
   );
 };
 
