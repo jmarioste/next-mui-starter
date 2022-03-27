@@ -11,4 +11,9 @@ export const theme = createTheme({
       contrastText: "#FFFFFF",
     },
   },
+  typography: {
+    allVariants: {
+      fontFamily: ["Inter", "san-serif"].join(","),
+    },
+  },
 });

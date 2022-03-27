@@ -9,32 +9,31 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-// import { useAppStateQuery } from "graphql/local.generated";
+import { useAppState } from "components/hooks/useAppState";
 import { usePostsQuery } from "graphql/posts.generated";
-import { appStateVar } from "lib/apollo/cache";
 import { useSession } from "next-auth/react";
 import React from "react";
 
 const Posts = () => {
   const { data: session } = useSession();
-  const appState = useReactiveVar(appStateVar);
+  const { state, setContextState } = useAppState();
   const { data } = usePostsQuery({
     skip: !session,
+    fetchPolicy: "network-only",
   });
 
-  console.log("appState", appState);
-
   const handleClick = () => {
-    appStateVar({
-      ...appState,
-      modalShown: !appState.modalShown,
+    setContextState({
+      ...state,
+      modalShown: !state.modalShown,
     });
   };
+
   return (
     <Stack spacing={2}>
       <Box>
         <Button onClick={handleClick}>Show Dialog</Button>
-        <Dialog open={appState.modalShown}>
+        <Dialog open={state.modalShown}>
           <DialogTitle>My Dialog</DialogTitle>
           <DialogContent>My Content</DialogContent>
           <DialogActions>

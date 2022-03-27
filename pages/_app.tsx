@@ -4,23 +4,26 @@ import { theme } from "components/theme";
 import Layout from "components/common/Layout";
 import { SessionProvider } from "next-auth/react";
 import MyApolloProvider from "lib/apollo/ApolloProvider";
-import { useServiceWorker } from "components/hooks/useServiceWorker";
+import { ServiceWorkerProvider } from "components/hooks/useServiceWorker";
+import { AppStateProvider } from "components/hooks/useAppState";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useServiceWorker();
-
   return (
-    <ThemeProvider theme={theme}>
-      <SessionProvider>
-        <MyApolloProvider>
-          <CssBaseline />
+    <ServiceWorkerProvider>
+      <AppStateProvider>
+        <ThemeProvider theme={theme}>
+          <SessionProvider>
+            <MyApolloProvider>
+              <CssBaseline />
 
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </MyApolloProvider>
-      </SessionProvider>
-    </ThemeProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </MyApolloProvider>
+          </SessionProvider>
+        </ThemeProvider>
+      </AppStateProvider>
+    </ServiceWorkerProvider>
   );
 }
 

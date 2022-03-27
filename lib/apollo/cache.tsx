@@ -1,17 +1,16 @@
 import { InMemoryCache, makeVar, ReactiveVar } from "@apollo/client";
-
-const appInitialState = {
-  loggedIn: false,
+const isServer = typeof window === "undefined";
+const appInitials = {
   modalShown: false,
+  isLoggedIn: false,
 };
-type AppState = typeof appInitialState;
+type AppState = typeof appInitials;
+
+const appInitialState =
+  (!isServer && JSON.parse(localStorage.getItem("app-state"))) ?? appInitials;
 
 export const appStateVar: ReactiveVar<AppState> = makeVar(appInitialState);
 
-appStateVar.onNextChange((state) => {
-  navigator.serviceWorker.controller.postMessage({
-    type: "state-change",
-    state,
-  });
-});
 export const apolloCache = new InMemoryCache({});
+
+// appStateVar.attachCache(apolloCache);
