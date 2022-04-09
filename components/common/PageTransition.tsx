@@ -15,24 +15,10 @@ const PageTransition = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (loading > 0) {
-      const timer = setTimeout(() => {
-        try {
-          setLoading((prev) => prev + 15);
-        } catch (e) {
-          console.log(e.message);
-        }
-      }, 50);
-
-      return () => clearTimeout(timer);
-    }
-  });
-
   return (
     !!loading && (
       <Box position="fixed" width="100%" top={0}>
-        <LinearProgress color="primary" variant="determinate" value={loading} />
+        <LinearProgress color="primary" variant="indeterminate" />
       </Box>
     )
   );

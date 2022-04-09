@@ -22,18 +22,21 @@ const initalValues: SignInSchema = {
 const SignIn = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-
+  const callbackUrl = (router.query.redirectUrl as string) ?? "/";
   const handleSubmit = async (values: SignInSchema) => {
     try {
       const response = await signIn("credentials", {
         email: values.email,
         password: values.password,
-        callbackUrl: router.asPath,
+        callbackUrl: callbackUrl,
         redirect: false,
       });
       console.log(response.error);
       if (response.error) {
         setError(response.error);
+      } else {
+        setError("");
+        router.push(callbackUrl);
       }
     } catch (e) {
       console.log(e);
@@ -49,6 +52,9 @@ const SignIn = () => {
           onSubmit={handleSubmit}
           initialValues={initalValues}
           validationSchema={schema}
+          validate={() => {
+            setError("");
+          }}
         >
           <Form>
             <Stack spacing={1} justifyContent="center" height="100vh">

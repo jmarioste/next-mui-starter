@@ -25,6 +25,7 @@ type ValidationError = {
 
 const errorLink = onError(({ response, graphQLErrors, networkError }) => {
   if (graphQLErrors) {
+    console.log(JSON.stringify(graphQLErrors, null, 4));
     const formatted = graphQLErrors.flatMap((error) => {
       //check if there are validation errors returned by class-validator from backend.
       const validationError = error.extensions.exception
@@ -37,6 +38,13 @@ const errorLink = onError(({ response, graphQLErrors, networkError }) => {
         return validationErrors;
       }
 
+      //check if error is an internal server error. just show minimal error message to user.
+      if (error.extensions.code === "INTERNAL_SERVER_ERROR") {
+        console.error(error.message); // log message
+        return [new GraphQLError("Internal Server Error")];
+      }
+
+      //return the error directly
       return error;
     });
     response.errors = formatted;

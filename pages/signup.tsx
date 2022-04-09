@@ -1,4 +1,4 @@
-import { Container, Stack, Typography } from "@mui/material";
+import { Alert, Container, Stack, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import { LoadingButton } from "@mui/lab";
 import { object, string, TypeOf } from "yup";
@@ -7,6 +7,7 @@ import { useSignupMutation } from "graphql/user.generated";
 import FormikTextField from "components/common/FormikTextField";
 import Link from "next/link";
 import PageTransition from "components/common/PageTransition";
+import { useState } from "react";
 
 const schema = object({
   name: string().required(),
@@ -22,19 +23,21 @@ const initalValues: SignupSchema = {
 };
 
 const SignUp = () => {
-  const [signup, { loading }] = useSignupMutation();
+  const [signup, { loading, error: signUpErr }] = useSignupMutation();
+  // const [error, setError] = useState("");
   const handleSubmit = (values: SignupSchema) => {
     signup({
       variables: {
         input: values,
       },
-      onCompleted: () => {
+      onCompleted() {
         signIn("credentials", {
           email: values.email,
           password: values.password,
           callbackUrl: "/",
         });
       },
+      onError() {},
     });
   };
   return (
@@ -58,11 +61,12 @@ const SignUp = () => {
                 label="password"
                 type="password"
               ></FormikTextField>
+              {signUpErr && <Alert severity="error">{signUpErr.message}</Alert>}
               <Stack direction="row" spacing={1}>
                 <LoadingButton
                   type="submit"
                   variant="contained"
-                  loading={loading}
+                  loading={loading && !signUpErr}
                 >
                   Create account
                 </LoadingButton>

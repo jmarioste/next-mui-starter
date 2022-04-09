@@ -51,19 +51,11 @@ export default async function hanlder(
               },
             });
             const user = data?.signin;
-
             return {
               ...user,
             };
           } catch (e) {
-            if (e instanceof ApolloError) {
-              if (e.networkError) {
-                throw new Error("Network Error");
-              }
-              throw e;
-            }
-
-            throw new Error(`${e.message}`);
+            throw e;
           }
         },
       }),
