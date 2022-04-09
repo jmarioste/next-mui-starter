@@ -1,10 +1,9 @@
 // import { NextLink } from "components/common/NextLink";
-import { Box, Link as MuiLink, Typography } from "@mui/material";
-import Image from "components/common/Image";
+import { Box } from "@mui/material";
 import Layout from "components/common/Layout";
+import HomePage from "components/home";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
@@ -15,20 +14,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box>
-        <Typography variant="h4">
-          <strong>Expense</strong>Book
-        </Typography>
-        <Link href={"/posts"} passHref>
-          <MuiLink>Posts</MuiLink>
-        </Link>
-        <Box position={"relative"} width="100%" height="800px">
-          <Image
-            src={"/non-existent.png"}
-            layout="fill"
-            objectFit="cover"
-            alt="bg"
-          />
-        </Box>
+        <HomePage />
       </Box>
     </Layout>
   );
