@@ -57,6 +57,7 @@ const errorLink = onError(({ response, graphQLErrors, networkError }) => {
 });
 
 const cache = apolloCache;
+
 export function getApolloClient() {
   if (apolloClient) return apolloClient;
   apolloClient = new ApolloClient({

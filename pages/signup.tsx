@@ -7,7 +7,6 @@ import { useSignupMutation } from "graphql/user.generated";
 import FormikTextField from "components/common/FormikTextField";
 import Link from "next/link";
 import PageTransition from "components/common/PageTransition";
-import { useState } from "react";
 
 const schema = object({
   name: string().required(),

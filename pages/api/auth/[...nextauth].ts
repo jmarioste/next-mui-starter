@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 import jwt from "jsonwebtoken";
 import { getApolloClient } from "lib/apollo/apollo-client";
-import { ApolloError } from "@apollo/client";
 import {
   LoginMutation,
   LoginMutationVariables,

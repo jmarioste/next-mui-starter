@@ -1,12 +1,14 @@
-import type { AppProps } from "next/app";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { AppProps } from "next/app";
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import { theme } from "components/theme";
 import { SessionProvider } from "next-auth/react";
 import MyApolloProvider from "lib/apollo/ApolloProvider";
 import { ServiceWorkerProvider } from "components/hooks/useServiceWorker";
 import { AppStateProvider } from "components/hooks/useAppState";
+import { NextPage } from "next";
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   return (
     <ServiceWorkerProvider>
       <AppStateProvider>
@@ -22,6 +24,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       </AppStateProvider>
     </ServiceWorkerProvider>
   );
-}
+};
 
 export default MyApp;
