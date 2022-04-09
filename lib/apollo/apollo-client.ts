@@ -7,7 +7,8 @@ import {
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import { apolloCache } from "./cache";
-
+import { onError } from "@apollo/client/link/error";
+import { GraphQLError } from "graphql";
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const httpLink = new HttpLink({
@@ -15,12 +16,44 @@ const httpLink = new HttpLink({
   credentials: "include",
 });
 
+type ValidationError = {
+  property: string;
+  constraints: {
+    [key: string]: string;
+  };
+};
+
+const errorLink = onError(({ response, graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    const formatted = graphQLErrors.flatMap((error) => {
+      //check if there are validation errors returned by class-validator from backend.
+      const validationError = error.extensions.exception
+        ?.validationErrors as ValidationError[];
+      if (validationError) {
+        const validationErrors = validationError.flatMap((e) => {
+          const message = Object.values(e.constraints).join(",");
+          return new GraphQLError(message);
+        });
+        return validationErrors;
+      }
+
+      return error;
+    });
+    response.errors = formatted;
+  }
+
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+    // response.errors = [new GraphQLError("Network error")];
+  }
+});
+
 const cache = apolloCache;
 export function getApolloClient() {
   if (apolloClient) return apolloClient;
   apolloClient = new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: ApolloLink.from([httpLink]),
+    link: ApolloLink.from([errorLink, httpLink]),
     cache: cache,
   });
 
@@ -46,7 +79,7 @@ export function useApollo() {
         return forward(operation);
       });
 
-      client.setLink(ApolloLink.from([authMiddleware, httpLink]));
+      client.setLink(ApolloLink.from([errorLink, authMiddleware, httpLink]));
     }
     return client;
   }, [token]);

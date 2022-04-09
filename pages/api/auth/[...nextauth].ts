@@ -58,9 +58,9 @@ export default async function hanlder(
           } catch (e) {
             if (e instanceof ApolloError) {
               if (e.networkError) {
-                throw new Error("Internal Server error");
+                throw new Error("Network Error");
               }
-              throw new Error(e.message);
+              throw e;
             }
 
             throw new Error(`${e.message}`);
