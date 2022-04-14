@@ -18,6 +18,7 @@
     "@mui/material": "^5.5.1",
     "@next/bundle-analyzer": "^12.1.4",
     "@svgr/webpack": "^6.2.1",
+    "@types/oidc-provider": "^7.8.2",
     "axios": "^0.26.1",
     "cookies": "^0.8.0",
     "formik": "^2.2.9",
@@ -25,6 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "next": "12.1.0",
     "next-auth": "^4.3.1",
+    "oidc-provider": "^7.10.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "yup": "^0.32.11"

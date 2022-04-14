@@ -13,6 +13,14 @@ const nextConfig = {
 
     return config;
   },
+  rewrites() {
+    return [
+      {
+        source: "/oidc",
+        destination: "/api/oidc",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
