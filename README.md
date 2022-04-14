@@ -1,5 +1,9 @@
 Build this repo with practical mui components/
 
+```
+npx create-next-app@latest --typescript -e "https://github.com/jmarioste/next-mui-starter"
+```
+
 # Next.js Mui Starter
 
 Starter Template using Next.js with these libraries:
