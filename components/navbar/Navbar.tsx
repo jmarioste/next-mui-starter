@@ -5,9 +5,9 @@ import {
   Stack,
   Box,
   Button,
-  styled,
   Skeleton,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { MuiLink } from "components/common/Alias";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const Navbar = () => {
       <Toolbar disableGutters>
         <Container maxWidth="lg">
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Link href="/" passHref>
+            <Link href="/" passHref prefetch={false}>
               <MuiLink underline="none">{`ExpenseBook`}</MuiLink>
             </Link>
             <Box flex={1} />
@@ -35,10 +35,10 @@ const Navbar = () => {
                 Go to Dashboard
               </Button>
             </Link> */}
-            <Link href="/about" passHref>
+            <Link href="/about" passHref prefetch={false}>
               <Button variant="text">About</Button>
             </Link>
-            <Link href="/contact" passHref>
+            <Link href="/contact" passHref prefetch={false}>
               <Button variant="text">Contact</Button>
             </Link>
             {status === "loading" ? (
@@ -52,7 +52,11 @@ const Navbar = () => {
                 <Button variant="text" onClick={() => signIn()}>
                   Sign in
                 </Button>
-                <Link href={`/signup?redirectUrl=${redirectUrl}`} passHref>
+                <Link
+                  href={`/signup?redirectUrl=${redirectUrl}`}
+                  passHref
+                  prefetch={false}
+                >
                   <Button variant="contained" color="primary">
                     Sign up
                   </Button>

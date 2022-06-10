@@ -18,7 +18,7 @@ const Custom500Page = () => {
             {`Don't worry, we're already looking into
           it.`}
           </Typography>
-          <Link href="/" passHref>
+          <Link href="/" passHref prefetch={false}>
             <MuiLink>Back to home</MuiLink>
           </Link>
         </Stack>

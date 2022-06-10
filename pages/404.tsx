@@ -14,7 +14,7 @@ const NotFoundPage = () => {
         <Stack height="100vh" alignItems="center" justifyContent="center">
           <Custom404Svg />
           <Typography variant="h4">404 - Page Not found</Typography>
-          <Link href="/" passHref>
+          <Link href="/" passHref prefetch={false}>
             <MuiLink>Back to home</MuiLink>
           </Link>
         </Stack>
